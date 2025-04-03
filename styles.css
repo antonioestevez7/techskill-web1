@@ -704,22 +704,22 @@ input:checked + .slider::before {
 /* Responsive */
 @media (max-width: 768px) {
   .header-content {
-    flex-direction: column;
+    flex-direction: row; /* Mantiene horizontal */
+    justify-content: center;
     align-items: center;
-    text-align: center;
   }
 
   .logo-header {
-    height: 190px;
-    margin-bottom: 1rem;
+    height: 160px;
   }
 
   .texto-header h1 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+    text-align: left;
   }
 
   .subtitulo {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 }
 
