@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("filtro");
   const sectores = document.querySelectorAll(".sector");
+  const mensajeNoResultados = document.getElementById("mensaje-no-resultados"); // Mensaje global
+  const textoBuscado = document.getElementById("texto-buscado"); // Span para mostrar la palabra
 
   // Función para actualizar la visibilidad de los controles del carrusel
   const actualizarControlesCarrusel = (sector) => {
@@ -18,28 +20,67 @@ document.addEventListener("DOMContentLoaded", () => {
   input.addEventListener("input", () => {
     const filtro = input.value.toLowerCase().trim();
     const hayFiltro = filtro.length > 0;
-
+    const palabras = filtro.split(/\s+/); // divide por espacios
+    let hayCoincidenciasGlobales = false;
+  
     sectores.forEach(sector => {
       const simuladores = sector.querySelectorAll(".simulador");
       let sectorTieneCoincidencias = false;
-
+  
       simuladores.forEach(simulador => {
         const keywords = simulador.dataset.keywords?.toLowerCase() || "";
-        const visible = keywords.includes(filtro);
+        const contenidoVisible = simulador.textContent.toLowerCase();
+  
+        // ✅ Coincidencia si TODAS las palabras están presentes (puedes cambiarlo a "al menos una", si prefieres)
+        const visible = palabras.some(palabra =>
+          keywords.includes(palabra) || contenidoVisible.includes(palabra)
+        );
+  
         simulador.style.display = visible ? "block" : "none";
         if (visible) {
           sectorTieneCoincidencias = true;
+          hayCoincidenciasGlobales = true;
         }
       });
-
-      // Mostrar u ocultar el sector basado en coincidencias
+  
+      // Mostrar u ocultar el sector
       sector.style.display = (hayFiltro && !sectorTieneCoincidencias) ? "none" : "block";
-
-      // Actualizar la visibilidad de los controles del carrusel
+  
+      // Actualizar visibilidad de los controles
       actualizarControlesCarrusel(sector);
+      // Reiniciar carrusel al inicio cuando hay filtro
+const track = sector.querySelector(".carousel-track");
+if (track) {
+  track.style.transform = "translateX(0)";
+}
+
+// Ocultar todos los dots excepto los necesarios
+const dots = sector.querySelectorAll('.carousel-indicators .dot');
+if (dots.length > 0) {
+  dots.forEach(dot => dot.classList.remove("active"));
+  const primerVisible = sector.querySelector(".simulador:not([style*='display: none'])");
+  const simuladores = Array.from(sector.querySelectorAll(".simulador"));
+  const index = simuladores.indexOf(primerVisible);
+  if (index >= 0 && dots[index]) {
+    dots[index].classList.add("active");
+  }
+}
     });
+  
+    // Mensaje global si no hay coincidencias
+    if (mensajeNoResultados) {
+      if (!hayCoincidenciasGlobales && hayFiltro) {
+        mensajeNoResultados.style.display = "block";
+        textoBuscado.textContent = filtro;
+      } else {
+        mensajeNoResultados.style.display = "none";
+        textoBuscado.textContent = "";
+      }
+    }
   });
+  
 });
+
 
 // CARRUSEL + AUTO-SLIDE + PAUSA SI HAY BÚSQUEDA
 document.querySelectorAll('.carousel').forEach(carousel => {
@@ -189,4 +230,10 @@ toggle.addEventListener("change", () => {
     localStorage.setItem("modo", "claro");
     label.textContent = "Modo oscuro";
   }
+
+
+
+  
 });
+
+

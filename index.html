@@ -17,7 +17,6 @@
 
 <header>
   <div class="header-wrapper">
-
     <div class="switch-container">
       <label class="switch">
         <input type="checkbox" id="toggle-theme" />
@@ -29,16 +28,14 @@
       <span class="modo-label">Modo claro</span>
     </div>
 
-    <div class="header-texto-con-logo">
-      <img src="img/techskill-imagen.png" alt="Logo TechSkill" class="logo-header" />
-      <div class="texto-header">
-        <h1>Buscador de Simuladores de Realidad Virtual y Aumentada</h1>
-        <p class="subtitulo">Filtra por sector para encontrar soluciones inmersivas adaptadas a la industria</p>
-      </div>
-    </div>
-
+    <div class="header-content">
+  <img src="img/techskill-imagen.png" alt="TechSkill Logo" class="logo-header" />
+  <div class="texto-header">
+    <h1>Buscador de Simuladores de Realidad Virtual y Aumentada</h1>
+    <p class="subtitulo">Filtra por sector para encontrar soluciones inmersivas adaptadas a la industria</p>
   </div>
-</header>
+</div>
+
 
 
 
@@ -51,6 +48,10 @@
     <input type="text" id="filtro" placeholder="Buscar simuladores, empresas, tecnologías..." />
   </div>
 </section>
+
+<div id="mensaje-no-resultados" class="mensaje-no-resultados" style="display: none;">
+  🔍 No se encontraron simuladores para "<span id="texto-buscado"></span>"
+</div>
 
   <main id="sectores">
 
